@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
@@ -7,10 +8,15 @@ import { useGetSongDetailsQuery, useGetSongRelatedQuery } from '../redux/service
 
 const SongDetails = () => {
   const dispatch = useDispatch();
-  const { songid } = useParams();
+  const { songid, id: artistId } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
+
+  const { data, isFetching: isFetchinRelatedSongs, error } = useGetSongRelatedQuery({ songid });
   const { data: songData, isFetching: isFetchingSongDetails } = useGetSongDetailsQuery({ songid });
-  const { data, isFetching: isFetchingRelatedSongs, error } = useGetSongRelatedQuery({ songid });
+
+  if (isFetchingSongDetails && isFetchinRelatedSongs) return <Loader title="Searching song details" />;
+
+  if (error) return <Error />;
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
@@ -21,31 +27,36 @@ const SongDetails = () => {
     dispatch(playPause(true));
   };
 
-  if (isFetchingSongDetails || isFetchingRelatedSongs) return <Loader title="Buscando cancion..." />;
-  if (error) return <Error />;
-
   return (
     <div className="flex flex-col">
-      <DetailsHeader artistId="" songData={songData} />
+      <DetailsHeader
+        artistId={artistId}
+        songData={songData}
+      />
 
       <div className="mb-10">
         <h2 className="text-white text-3xl font-bold">Letras:</h2>
 
         <div className="mt-5">
           {songData?.sections[1].type === 'LYRICS'
-            ? songData?.sections[1].text.map((line, i) => (
-              <p className="text-gray-400 text-base my-1">{line}</p>
-            )) : <p>Lo sentimos no hay letras disponibles!</p>}
+            ? songData?.sections[1]?.text.map((line, i) => (
+              <p key={`lyrics-${line}-${i}`} className="text-gray-400 text-base my-1">{line}</p>
+            ))
+            : (
+              <p className="text-gray-400 text-base my-1">Lo sentimos, No se han encontrado las letras!</p>
+            )}
         </div>
       </div>
 
       <RelatedSongs
         data={data}
+        artistId={artistId}
         isPlaying={isPlaying}
         activeSong={activeSong}
-        handlePlayClick={handlePlayClick}
         handlePauseClick={handlePauseClick}
+        handlePlayClick={handlePlayClick}
       />
+
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PlayPause from './PlayPause';
 
 const SongBar = ({ song, i, artistId, isPlaying, activeSong, handlePauseClick, handlePlayClick }) => (
-  <div className={`w-full flex flex-row items-center hover:bg-[#42546e] hover:bg-opacity-30 ${activeSong?.title === song?.title ? 'bg-[#42546e]' : 'bg-transparent'} py-2 p-4 rounded-lg cursor-pointer mb-2`}>
+  <div className={`w-full flex flex-row items-center hover:bg-[#42546e] hover:bg-opacity-30 ${activeSong?.title === song?.title ? '' : 'bg-transparent'} py-2 p-4 rounded-lg cursor-pointer mb-2`}>
     <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
     <div className="flex-1 flex flex-row justify-between items-center">
       <img
