@@ -12,7 +12,7 @@ const Search = () => {
 
   const songs = data?.tracks?.hits.map((song) => song.track);
 
-  if (isFetching) return <Loader title={`Searching ${searchTerm}...`} />;
+  if (isFetching) return <Loader title={`Buscando ${searchTerm}...`} />;
 
   if (error) return <Error />;
 
