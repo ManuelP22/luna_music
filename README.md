@@ -29,7 +29,7 @@ App de musica online realizada con React y con ayuda de RapidApi las canciones s
 
 ![ezgif-2-75eced3cd0](https://user-images.githubusercontent.com/51509197/207628872-6ca64008-be0e-4669-8579-b22fb5977b5a.gif)
 
-App web de musica Luna Music: `MannuelP22`, `next_bank_app`, `Manuel Perez`, `manuelperezp22@hotmail.com`, `luna_music`,
+App web de musica Luna Music: `MannuelP22`, `Manuel Perez`, `manuelperezp22@hotmail.com`, `luna_music`,
 
 
 ### Realizado con:
