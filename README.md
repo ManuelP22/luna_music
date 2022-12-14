@@ -18,7 +18,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre el Proyecto
-App de para escuchar musica online realizada con React y con ayuda de RapidApi las canciones son traidas de la base de datos del app Shazam atraves de su api Shazamcore
+App de musica online realizada con React y con ayuda de RapidApi las canciones son traidas de la base de datos del app Shazam atraves de su api Shazamcore
+<p color="red">GIF Aqui -></p>
 
 ![ezgif-2-c4d9332e63](https://user-images.githubusercontent.com/51509197/207625035-6d28ae27-3b7e-413d-bffe-c8875166934e.gif)
 
@@ -36,8 +37,12 @@ App web de musica Luna Music: `MannuelP22`, `next_bank_app`, `Manuel Perez`, `ma
 * [![Tailwindcss][Tailwindcss.com]][Tailwindcss-url]
 * [![Redux][redux.js.org]][Redux-url]
 
+#### Prueba Luna Music Aqui:
 
-
+  ```sh
+  https://superb-kashata-956feb.netlify.app
+  ```
+  
 <!-- GETTING STARTED -->
 ## Preparación
 
