@@ -18,7 +18,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre el Proyecto
-App de musica online realizada con React y con ayuda de RapidApi las canciones son traidas de la base de datos del app Shazam atraves de su api Shazamcore
+App de musica online realizada con React y con ayuda de RapidApi las canciones son traidas de la base de datos de la app Shazam atraves de su api Shazamcore
 ``` diff
 - GIF Aqui ->
 ```
