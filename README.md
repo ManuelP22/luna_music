@@ -37,7 +37,6 @@ App web de musica Luna Music: `MannuelP22`, `next_bank_app`, `Manuel Perez`, `ma
 * [![React][React.js]][React-url]
 * [![Vite][Vite.dev]][Vite-url]
 * [![Tailwindcss][Tailwindcss.com]][Tailwindcss-url]
-* [![Redux][redux.js.org]][Redux-url]
 
 #### Prueba Luna Music Aqui:
 
