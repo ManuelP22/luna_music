@@ -7,7 +7,7 @@ import { useGetTopChartsQuery } from '../redux/services/shazamCore';
 const TopArtists = () => {
   const { data, isFetching, error } = useGetTopChartsQuery();
 
-  if (isFetching) return <Loader title="Cargando Canciones Serca de ti..." />;
+  if (isFetching) return <Loader title="Cargando Canciones Cerca de ti..." />;
   if (error) return <Error />;
 
   return (
