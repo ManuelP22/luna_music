@@ -60,7 +60,7 @@ Este proyecto utiliza la version mas actualiza de node 18.8.0 Actual
 
 2. Clonar el repo
    ```sh
-   git clone https://github.com/github_ManuelP22/next_bank_app.git
+   git clone https://github.com/ManuelP22/luna_music
    ```
 3. Instalar NPM packages
    ```sh
