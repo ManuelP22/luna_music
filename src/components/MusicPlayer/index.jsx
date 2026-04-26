@@ -1,54 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { nextSong, prevSong, playPause } from '../../redux/features/playerSlice';
 import Controls from './Controls';
 import Player from './Player';
 import Seekbar from './Seekbar';
 import Track from './Track';
 import VolumeBar from './VolumeBar';
+import { usePlayerStore } from '../../store/playerStore';
 
 const MusicPlayer = () => {
-  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } = useSelector((state) => state.player);
+  const activeSong = usePlayerStore((state) => state.activeSong);
+  const currentSongs = usePlayerStore((state) => state.currentSongs);
+  const currentIndex = usePlayerStore((state) => state.currentIndex);
+  const isActive = usePlayerStore((state) => state.isActive);
+  const isPlaying = usePlayerStore((state) => state.isPlaying);
+  const nextSong = usePlayerStore((state) => state.nextSong);
+  const prevSong = usePlayerStore((state) => state.prevSong);
+  const playPause = usePlayerStore((state) => state.playPause);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentSongs.length) dispatch(playPause(true));
-  }, [currentIndex]);
+    if (currentSongs.length) playPause(true);
+  }, [currentIndex, currentSongs.length, playPause]);
 
   const handlePlayPause = () => {
     if (!isActive) return;
 
     if (isPlaying) {
-      dispatch(playPause(false));
+      playPause(false);
     } else {
-      dispatch(playPause(true));
+      playPause(true);
     }
   };
 
   const handleNextSong = () => {
-    dispatch(playPause(false));
+    playPause(false);
 
     if (!shuffle) {
-      dispatch(nextSong((currentIndex + 1) % currentSongs.length));
+      nextSong((currentIndex + 1) % currentSongs.length);
     } else {
-      dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
+      nextSong(Math.floor(Math.random() * currentSongs.length));
     }
   };
 
   const handlePrevSong = () => {
     if (currentIndex === 0) {
-      dispatch(prevSong(currentSongs.length - 1));
+      prevSong(currentSongs.length - 1);
     } else if (shuffle) {
-      dispatch(prevSong(Math.floor(Math.random() * currentSongs.length)));
+      prevSong(Math.floor(Math.random() * currentSongs.length));
     } else {
-      dispatch(prevSong(currentIndex - 1));
+      prevSong(currentIndex - 1);
     }
   };
 
@@ -72,7 +77,7 @@ const MusicPlayer = () => {
           value={appTime}
           min="0"
           max={duration}
-          onInput={(event) => setSeekTime(event.target.value)}
+          onInput={(event) => setSeekTime(Number(event.target.value))}
           setSeekTime={setSeekTime}
           appTime={appTime}
         />
@@ -88,7 +93,7 @@ const MusicPlayer = () => {
           onLoadedData={(event) => setDuration(event.target.duration)}
         />
       </div>
-      <VolumeBar value={volume} min="0" max="1" onChange={(event) => setVolume(event.target.value)} setVolume={setVolume} />
+      <VolumeBar value={volume} min="0" max="1" onChange={(event) => setVolume(Number(event.target.value))} setVolume={setVolume} />
     </div>
   );
 };
