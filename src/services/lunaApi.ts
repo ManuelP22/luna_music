@@ -30,7 +30,7 @@ const API_BASE_URL = resolveApiBaseUrl();
 
 const buildApiUrl = (path: string) => `${API_BASE_URL}${path}`;
 
-const fetchJson = async <T,>(path: string): Promise<T> => {
+const fetchJson = async <T>(path: string): Promise<T> => {
   const response = await fetch(buildApiUrl(path));
 
   if (!response.ok) {

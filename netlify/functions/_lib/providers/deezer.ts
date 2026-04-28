@@ -125,14 +125,11 @@ export const mapDeezerArtistToDetails = (
   providerRefs: [{ source: 'deezer', artistId: String(artist.id) }],
 });
 
-export const getDeezerTopTracks = async (limit: number) =>
-  fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/chart/0/tracks?limit=${limit}`);
+export const getDeezerTopTracks = async (limit: number) => fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/chart/0/tracks?limit=${limit}`);
 
-export const getDeezerTopArtists = async (limit: number) =>
-  fetchJson<DeezerCollection<DeezerArtist>>(`${DEEZER_API_BASE_URL}/chart/0/artists?limit=${limit}`);
+export const getDeezerTopArtists = async (limit: number) => fetchJson<DeezerCollection<DeezerArtist>>(`${DEEZER_API_BASE_URL}/chart/0/artists?limit=${limit}`);
 
-export const getDeezerGenreTracks = async (genreId: number, limit: number) =>
-  fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/chart/${genreId}/tracks?limit=${limit}`);
+export const getDeezerGenreTracks = async (genreId: number, limit: number) => fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/chart/${genreId}/tracks?limit=${limit}`);
 
 export const searchDeezerTracks = async (query: string, limit: number) => {
   const encoded = encodeURIComponent(query);
@@ -144,14 +141,11 @@ export const searchDeezerArtists = async (query: string, limit: number) => {
   return fetchJson<DeezerCollection<DeezerArtist>>(`${DEEZER_API_BASE_URL}/search/artist?q=${encoded}&limit=${limit}`);
 };
 
-export const getDeezerTrack = async (trackId: string) =>
-  fetchJson<DeezerTrack & { release_date?: string }>(`${DEEZER_API_BASE_URL}/track/${trackId}`);
+export const getDeezerTrack = async (trackId: string) => fetchJson<DeezerTrack & { release_date?: string }>(`${DEEZER_API_BASE_URL}/track/${trackId}`);
 
-export const getDeezerArtist = async (artistId: string) =>
-  fetchJson<DeezerArtistDetails>(`${DEEZER_API_BASE_URL}/artist/${artistId}`);
+export const getDeezerArtist = async (artistId: string) => fetchJson<DeezerArtistDetails>(`${DEEZER_API_BASE_URL}/artist/${artistId}`);
 
-export const getDeezerArtistTopTracks = async (artistId: string, limit: number) =>
-  fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/artist/${artistId}/top?limit=${limit}`);
+export const getDeezerArtistTopTracks = async (artistId: string, limit: number) => fetchJson<DeezerCollection<DeezerTrack>>(`${DEEZER_API_BASE_URL}/artist/${artistId}/top?limit=${limit}`);
 
 export const getDeezerSearchResults = async (query: string, limit: number): Promise<SearchResults> => {
   const [tracks, artists] = await Promise.all([

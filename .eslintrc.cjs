@@ -1,7 +1,9 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
+    node: true,
   },
   extends: ['plugin:react/recommended', 'airbnb'],
   parserOptions: {
@@ -11,7 +13,53 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: true,
+    },
+  },
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      extends: ['plugin:@typescript-eslint/recommended'],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      rules: {
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          {
+            argsIgnorePattern: '^_',
+          },
+        ],
+        'react/require-default-props': 'off',
+        'import/no-extraneous-dependencies': [
+          'error',
+          {
+            devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
+          },
+        ],
+      },
+    },
+    {
+      files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
+      env: {
+        node: true,
+      },
+    },
+  ],
   rules: {
     'max-len': 0,
     'no-param-reassign': 0,

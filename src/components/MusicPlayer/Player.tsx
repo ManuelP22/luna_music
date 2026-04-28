@@ -29,7 +29,7 @@ const Player = ({
     if (!ref.current) return;
 
     if (isPlaying) {
-      void ref.current.play();
+      ref.current.play().catch(() => {});
     } else {
       ref.current.pause();
     }

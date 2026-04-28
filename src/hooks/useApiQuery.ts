@@ -4,7 +4,7 @@ type UseApiQueryOptions = {
   enabled?: boolean;
 };
 
-export const useApiQuery = <T,>(
+export const useApiQuery = <T>(
   fetcher: () => Promise<T>,
   dependencies: readonly unknown[],
   options?: UseApiQueryOptions,

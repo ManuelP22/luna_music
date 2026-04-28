@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode } from 'swiper';
+import { FreeMode } from 'swiper/modules';
 import type { ArtistSummary, PlayerTrack, TrackSummary } from '../types/music';
 
 import PlayPause from './PlayPause';

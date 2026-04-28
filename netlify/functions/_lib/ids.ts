@@ -22,11 +22,9 @@ const parsePrefixedId = (value: string, prefix: string) => {
   throw new Error(`Invalid ${prefix} id: ${value}`);
 };
 
-export const createTrackId = (provider: string, trackId: string | number) =>
-  `${TRACK_PREFIX}_${provider}_${trackId}`;
+export const createTrackId = (provider: string, trackId: string | number) => `${TRACK_PREFIX}_${provider}_${trackId}`;
 
-export const createArtistId = (provider: string, artistId: string | number) =>
-  `${ARTIST_PREFIX}_${provider}_${artistId}`;
+export const createArtistId = (provider: string, artistId: string | number) => `${ARTIST_PREFIX}_${provider}_${artistId}`;
 
 export const parseTrackId = (value: string) => parsePrefixedId(value, TRACK_PREFIX);
 

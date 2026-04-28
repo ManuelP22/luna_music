@@ -2,11 +2,14 @@ import type { ApiErrorBody } from './contracts';
 
 export class ApiError extends Error {
   status: number;
+
   code: string;
+
   retryable: boolean;
+
   details?: unknown;
 
-  constructor(status: number, code: string, message: string, retryable = false, details?: unknown) {
+  constructor(status: number, code: string, message: string, details?: unknown, retryable = false) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -16,14 +19,16 @@ export class ApiError extends Error {
   }
 }
 
-export const jsonResponse = (data: unknown, init: ResponseInit = {}) =>
-  new Response(JSON.stringify(data), {
+export const jsonResponse = (data: unknown, init: ResponseInit = {}) => new Response(
+  JSON.stringify(data),
+  {
     ...init,
     headers: {
       'content-type': 'application/json; charset=utf-8',
       ...(init.headers ?? {}),
     },
-  });
+  },
+);
 
 export const errorResponse = (error: unknown) => {
   if (error instanceof ApiError) {
@@ -48,7 +53,7 @@ export const errorResponse = (error: unknown) => {
 
 export const assertGetRequest = (request: Request) => {
   if (request.method !== 'GET') {
-    throw new ApiError(405, 'METHOD_NOT_ALLOWED', 'Only GET requests are supported', false);
+    throw new ApiError(405, 'METHOD_NOT_ALLOWED', 'Only GET requests are supported');
   }
 };
 
@@ -56,7 +61,7 @@ export const getRequiredSearchParam = (request: Request, name: string) => {
   const value = new URL(request.url).searchParams.get(name)?.trim();
 
   if (!value) {
-    throw new ApiError(400, 'INVALID_REQUEST', `Missing required query parameter: ${name}`, false);
+    throw new ApiError(400, 'INVALID_REQUEST', `Missing required query parameter: ${name}`);
   }
 
   return value;
@@ -70,13 +75,13 @@ export const getLimit = (request: Request, fallback = 20) => {
   const parsed = Number(rawLimit);
 
   if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new ApiError(400, 'INVALID_REQUEST', 'Query parameter "limit" must be a positive number', false);
+    throw new ApiError(400, 'INVALID_REQUEST', 'Query parameter "limit" must be a positive number');
   }
 
   return Math.min(Math.floor(parsed), 50);
 };
 
-export const fetchJson = async <T,>(url: string, init?: RequestInit): Promise<T> => {
+export const fetchJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, init);
   const text = await response.text();
   const payload = text ? JSON.parse(text) : null;
@@ -86,8 +91,8 @@ export const fetchJson = async <T,>(url: string, init?: RequestInit): Promise<T>
       response.status >= 500 ? 502 : response.status,
       'UPSTREAM_REQUEST_FAILED',
       `Upstream provider request failed with status ${response.status}`,
-      response.status >= 500,
       payload,
+      response.status >= 500,
     );
   }
 
