@@ -1,25 +1,29 @@
-import type { PlayerTrack } from '../../types/music';
+import type { TrackProps } from './types';
 
-type TrackProps = {
-  isPlaying: boolean;
-  isActive: boolean;
-  activeSong: PlayerTrack | null;
+const Track = ({ isPlaying, isActive, activeSong, canPlayTrack }: TrackProps) => {
+  const artwork = activeSong?.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Luna';
+
+  return (
+    <div className="flex min-w-0 items-center gap-4">
+      <div className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-[20px] border border-white/10 bg-surface-container-high shadow-glass-inset ${isPlaying && isActive ? 'animate-spin-slow' : ''}`}>
+        <img src={artwork} alt="cover art" className="h-full w-full object-cover" />
+        <div className="liquid-border absolute inset-0 rounded-[20px]" />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-body-lg text-white">
+          {activeSong?.title || 'Selecciona una cancion'}
+        </p>
+        <p className="mt-1 truncate text-sm text-on-surface-variant">
+          {activeSong?.artistName || 'El reproductor permanecera listo en este footer'}
+        </p>
+      </div>
+
+      <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-primary-fixed md:block">
+        {canPlayTrack ? 'Preview' : 'Idle'}
+      </div>
+    </div>
+  );
 };
-
-const Track = ({ isPlaying, isActive, activeSong }: TrackProps) => (
-  <div className="flex-1 flex items-center justify-start">
-    <div className={`${isPlaying && isActive ? 'animate-[spin_3s_linear_infinite]' : ''} hidden sm:block h-16 w-16 mr-4`}>
-      <img src={activeSong?.imageUrl} alt="cover art" className="rounded-full w-full h-full object-cover" />
-    </div>
-    <div className="w-[50%]">
-      <p className="truncate text-white font-bold text-lg">
-        {activeSong?.title || 'No active song'}
-      </p>
-      <p className="truncate text-gray-300">
-        {activeSong?.artistName || 'No active artist'}
-      </p>
-    </div>
-  </div>
-);
 
 export default Track;

@@ -19,9 +19,17 @@ const RelatedSongs = ({
   handlePauseClick,
 }: RelatedSongsProps) => (
   <div className="flex flex-col">
-    <h1 className="font-bold text-3xl text-white">{title}</h1>
+    <div className="mb-6 flex items-end justify-between gap-4">
+      <div>
+        <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Queue</p>
+        <h1 className="mt-2 text-headline-lg text-white">{title}</h1>
+      </div>
+      <p className="hidden text-sm text-on-surface-variant sm:block">
+        Sigue explorando sin salir del flujo del reproductor.
+      </p>
+    </div>
 
-    <div className="mt-6 w-full flex flex-col">
+    <div className="flex w-full flex-col">
       {data.map((song, i) => (
         <SongBar
           key={song.id}

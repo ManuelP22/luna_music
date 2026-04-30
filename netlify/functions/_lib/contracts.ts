@@ -80,7 +80,7 @@ export type GeoCountryResponse = {
   detected: boolean;
   countryCode: string;
   countryName: string;
-  source: 'geo' | 'default' | 'manual';
+  source: 'geo' | 'locale' | 'default' | 'manual';
 };
 
 export type ApiErrorBody = {

@@ -31,17 +31,29 @@ const ArtistDetails = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-10">
       <DetailsHeader artistData={artistData} />
 
-      <RelatedSongs
-        title="Top Songs:"
-        data={artistData.topTracks}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-        handlePauseClick={handlePauseClick}
-        handlePlayClick={handlePlayClick}
-      />
+      {artistData.bio ? (
+        <section className="glass-card rounded-[28px] p-6 sm:p-8">
+          <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Artist Profile</p>
+          <h2 className="mt-3 text-headline-md text-white">Sobre este artista</h2>
+          <p className="mt-4 max-w-4xl whitespace-pre-line text-body-md leading-7 text-on-surface-variant">
+            {artistData.bio}
+          </p>
+        </section>
+      ) : null}
+
+      <section>
+        <RelatedSongs
+          title="Top Songs"
+          data={artistData.topTracks}
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+          handlePauseClick={handlePauseClick}
+          handlePlayClick={handlePlayClick}
+        />
+      </section>
     </div>
   );
 };

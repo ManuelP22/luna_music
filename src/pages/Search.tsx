@@ -19,23 +19,54 @@ const Search = () => {
   if (error) return <Error />;
 
   const songs = data?.tracks ?? [];
+  const artists = data?.artists ?? [];
+  const displaySearchTerm = decodeURIComponent(searchTerm);
 
   return (
-    <div className="flex flex-col">
-      <h2 className="font-bold text-3xl text-white text-left mt-4 mb-10">Resultados de <span className="text-cyan-400">{searchTerm}</span></h2>
+    <div className="relative flex flex-col gap-10">
+      <div className="ambient-glow right-[-12rem] top-[6rem]" />
+      <div className="ambient-glow-deep bottom-[-10rem] left-[-8rem] h-[24rem] w-[24rem]" />
 
-      <div className="flex flex-wrap sm:justify-start justify-center gap-8">
-        {songs.map((song, i) => (
-          <SongCard
-            key={song.id}
-            song={song}
-            isPlaying={isPlaying}
-            activeSong={activeSong}
-            data={songs}
-            i={i}
-          />
-        ))}
-      </div>
+      <section className="glass-panel relative z-10 overflow-hidden rounded-[32px] border border-white/10 p-6 sm:p-8">
+        <p className="text-label-sm uppercase tracking-[0.28em] text-primary-fixed">Search Results</p>
+        <h1 className="mt-3 text-headline-lg text-white">
+          Resultados de <span className="text-gradient-blue">{displaySearchTerm}</span>
+        </h1>
+        <p className="mt-4 max-w-2xl text-body-md text-on-surface-variant">
+          {songs.length} canciones y {artists.length} artistas relacionados con tu busqueda.
+        </p>
+      </section>
+
+      {songs.length > 0 ? (
+        <section className="glass-panel overflow-hidden rounded-[32px] border border-white/10 p-6 sm:p-8">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Tracks</p>
+              <h2 className="mt-2 text-headline-lg text-white">Coincidencias principales</h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {songs.map((song, i) => (
+              <SongCard
+                key={song.id}
+                song={song}
+                isPlaying={isPlaying}
+                activeSong={activeSong}
+                data={songs}
+                i={i}
+              />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className="glass-card rounded-[28px] p-6">
+          <h2 className="text-headline-md text-white">Sin canciones por ahora</h2>
+          <p className="mt-3 text-body-md text-on-surface-variant">
+            Prueba con otro artista, genero o termino relacionado para descubrir nuevas coincidencias.
+          </p>
+        </section>
+      )}
     </div>
   );
 };

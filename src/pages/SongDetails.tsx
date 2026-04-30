@@ -31,31 +31,40 @@ const SongDetails = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-10">
       <DetailsHeader songData={songData} />
 
-      <div className="mb-10">
-        <h2 className="text-white text-3xl font-bold">Letras:</h2>
+      <section className="glass-card rounded-[28px] p-6 sm:p-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Lyrics</p>
+            <h2 className="mt-2 text-headline-md text-white">Letras</h2>
+          </div>
+          <p className="hidden text-sm text-on-surface-variant sm:block">
+            {songData.lyrics.available ? 'Sincroniza con la atmosfera del track' : 'No disponibles para esta pista'}
+          </p>
+        </div>
 
-        <div className="mt-5">
+        <div className="mt-6 space-y-2">
           {songData.lyrics.available
             ? songData.lyrics.lines.map((line, i) => (
-              <p key={`lyrics-${line}-${i}`} className="text-gray-400 text-base my-1">{line}</p>
+              <p key={`lyrics-${line}-${i}`} className="text-body-md leading-7 text-on-surface-variant">{line}</p>
             ))
             : (
-              <p className="text-gray-400 text-base my-1">Lo sentimos, no se han encontrado las letras.</p>
+              <p className="text-body-md text-on-surface-variant">Lo sentimos, no se han encontrado las letras.</p>
             )}
         </div>
-      </div>
+      </section>
 
-      <RelatedSongs
-        data={songData.relatedTracks}
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-        handlePauseClick={handlePauseClick}
-        handlePlayClick={handlePlayClick}
-      />
-
+      <section>
+        <RelatedSongs
+          data={songData.relatedTracks}
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+          handlePauseClick={handlePauseClick}
+          handlePlayClick={handlePlayClick}
+        />
+      </section>
     </div>
   );
 };

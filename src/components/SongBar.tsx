@@ -20,33 +20,45 @@ const SongBar = ({
   handlePauseClick,
   handlePlayClick,
 }: SongBarProps) => (
-  <div className={`w-full flex flex-row items-center hover:bg-[#42546e] hover:bg-opacity-30 ${activeSong?.id === song.id ? '' : 'bg-transparent'} py-2 p-4 rounded-lg cursor-pointer mb-2`}>
-    <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
-    <div className="flex-1 flex flex-row justify-between items-center">
-      <img
-        className="w-20 h-20 rounded-lg object-cover"
-        src={song.imageUrl}
-        alt={song.title}
-      />
-      <div className="flex-1 flex flex-col justify-center mx-3">
-        <Link to={`/songs/${song.id}`}>
-          <p className="text-xl font-bold text-white">
-            {song.title}
-          </p>
-        </Link>
-        <p className="text-base text-gray-300 mt-1">
-          {song.albumName || song.artistName}
+  <div className={`track-row group mb-3 rounded-[22px] border border-white/5 ${activeSong?.id === song.id ? 'bg-primary-container/10 shadow-cyan-glow-sm' : 'glass-card'}`}>
+    <div className="w-8 flex-shrink-0 text-center text-label-sm text-white/50">
+      {String(i + 1).padStart(2, '0')}
+    </div>
+
+    <img
+      className="h-16 w-16 flex-shrink-0 rounded-[18px] object-cover"
+      src={song.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Luna'}
+      alt={song.title}
+    />
+
+    <div className="min-w-0 flex-1">
+      <Link to={`/songs/${song.id}`} className="block">
+        <p className="truncate text-body-lg text-white transition-colors group-hover:text-primary-fixed">
+          {song.title}
         </p>
+      </Link>
+
+      <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-on-surface-variant">
+        <span className="truncate">{song.artistName}</span>
+        <span className="hidden text-white/20 sm:inline">•</span>
+        <span className="truncate">{song.albumName || 'Luna Selection'}</span>
       </div>
     </div>
+
+    <div className="hidden text-label-sm uppercase tracking-[0.18em] text-white/35 md:block">
+      {song.isPlayable ? 'Playable' : 'Preview Off'}
+    </div>
+
     {handlePauseClick && handlePlayClick ? (
-      <PlayPause
-        isPlaying={isPlaying}
-        activeSong={activeSong}
-        song={song}
-        handlePause={handlePauseClick}
-        handlePlay={() => handlePlayClick(song, i)}
-      />
+      <div className="ml-2 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-md">
+        <PlayPause
+          isPlaying={isPlaying}
+          activeSong={activeSong}
+          song={song}
+          handlePause={handlePauseClick}
+          handlePlay={() => handlePlayClick(song, i)}
+        />
+      </div>
     ) : null}
   </div>
 );

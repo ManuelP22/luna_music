@@ -1,17 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useRef } from 'react';
-import type { PlayerTrack } from '../../types/music';
-
-type PlayerProps = {
-  activeSong: PlayerTrack | null;
-  isPlaying: boolean;
-  volume: number;
-  seekTime: number;
-  onEnded: () => void;
-  onTimeUpdate: (event: React.SyntheticEvent<HTMLAudioElement>) => void;
-  onLoadedData: (event: React.SyntheticEvent<HTMLAudioElement>) => void;
-  repeat: boolean;
-};
+import type { PlayerProps } from './types';
 
 const Player = ({
   activeSong,
@@ -28,12 +17,17 @@ const Player = ({
   useEffect(() => {
     if (!ref.current) return;
 
+    if (!activeSong?.previewUrl) {
+      ref.current.pause();
+      return;
+    }
+
     if (isPlaying) {
       ref.current.play().catch(() => {});
     } else {
       ref.current.pause();
     }
-  }, [isPlaying, activeSong?.id]);
+  }, [isPlaying, activeSong?.id, activeSong?.previewUrl]);
 
   useEffect(() => {
     if (ref.current) {

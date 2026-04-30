@@ -5,7 +5,7 @@ import { assertGetRequest, errorResponse, jsonResponse } from './_lib/http';
 export default async (request: Request, context: Context) => {
   try {
     assertGetRequest(request);
-    return jsonResponse(resolveCountryFromContext(context));
+    return jsonResponse(resolveCountryFromContext(request, context));
   } catch (error) {
     return errorResponse(error);
   }
