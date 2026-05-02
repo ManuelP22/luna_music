@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { Searchbar, Sidebar, MusicPlayer, TopPlay } from './components';
-import { ArtistDetails, TopArtists, AroundYou, Discover, Search, SongDetails, TopCharts } from './pages';
+import { ArtistDetails, TopArtists, AroundYou, Discover, ProjectAbout, Search, SongDetails, TopCharts } from './pages';
 
 const App = () => (
-  <div className="relative flex h-screen w-full flex-col overflow-hidden bg-surface-container-lowest text-on-surface">
+  <div className="relative flex h-screen w-full flex-col overflow-hidden bg-surface-container-lowest text-on-surface select-none">
 
     {/* Ambient glows — decorativos, no afectan el layout */}
     <div className="pointer-events-none fixed left-[-10rem] top-[-6rem] z-0 ambient-glow" />
@@ -39,6 +39,7 @@ const App = () => (
                   <Route path="/top-artists" element={<TopArtists />} />
                   <Route path="/top-charts" element={<TopCharts />} />
                   <Route path="/around-you" element={<AroundYou />} />
+                  <Route path="/project" element={<ProjectAbout />} />
                   <Route path="/artists/:id" element={<ArtistDetails />} />
                   <Route path="/songs/:songid" element={<SongDetails />} />
                   <Route path="/search/:searchTerm" element={<Search />} />

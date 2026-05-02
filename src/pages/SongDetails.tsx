@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
+import { useI18n } from '../i18n';
 import type { TrackSummary } from '../types/music';
 
 import { lunaApi } from '../services/lunaApi';
@@ -7,6 +8,7 @@ import { useApiQuery } from '../hooks/useApiQuery';
 import { usePlayerStore } from '../store/playerStore';
 
 const SongDetails = () => {
+  const { t } = useI18n();
   const { songid = '' } = useParams();
   const activeSong = usePlayerStore((state) => state.activeSong);
   const isPlaying = usePlayerStore((state) => state.isPlaying);
@@ -18,7 +20,7 @@ const SongDetails = () => {
     { enabled: Boolean(songid) },
   );
 
-  if (isLoading) return <Loader title="Searching song details" />;
+  if (isLoading) return <Loader title={t('songDetails.loadingTitle')} />;
   if (error || !songData) return <Error />;
 
   const handlePauseClick = () => {
@@ -37,11 +39,11 @@ const SongDetails = () => {
       <section className="glass-card rounded-[28px] p-6 sm:p-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Lyrics</p>
-            <h2 className="mt-2 text-headline-md text-white">Letras</h2>
+            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">{t('songDetails.lyricsLabel')}</p>
+            <h2 className="mt-2 text-headline-md text-white">{t('songDetails.lyricsTitle')}</h2>
           </div>
           <p className="hidden text-sm text-on-surface-variant sm:block">
-            {songData.lyrics.available ? 'Sincroniza con la atmosfera del track' : 'No disponibles para esta pista'}
+            {songData.lyrics.available ? t('songDetails.available') : t('songDetails.unavailable')}
           </p>
         </div>
 
@@ -51,7 +53,7 @@ const SongDetails = () => {
               <p key={`lyrics-${line}-${i}`} className="text-body-md leading-7 text-on-surface-variant">{line}</p>
             ))
             : (
-              <p className="text-body-md text-on-surface-variant">Lo sentimos, no se han encontrado las letras.</p>
+              <p className="text-body-md text-on-surface-variant">{t('songDetails.notFound')}</p>
             )}
         </div>
       </section>

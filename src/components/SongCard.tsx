@@ -15,7 +15,7 @@ type SongCardProps = {
 const SongCard = ({ song, isPlaying = false, activeSong, i, data }: SongCardProps) => {
   const setActiveSong = usePlayerStore((state) => state.setActiveSong);
   const playPause = usePlayerStore((state) => state.playPause);
-  const artwork = song.imageUrl || 'https://placehold.co/600x600/0d1626/e8f4ff?text=Luna';
+  const artwork = song.imageUrl || 'https://placehold.co/600x600/0d1626/e8f4ff?text=Cover';
 
   const handlePauseClick = () => {
     playPause(false);
@@ -27,7 +27,7 @@ const SongCard = ({ song, isPlaying = false, activeSong, i, data }: SongCardProp
   };
 
   return (
-    <div className="glass-card group flex h-full w-full min-w-0 cursor-pointer flex-col gap-4 rounded-[28px] p-4 animate-slideup">
+    <div className="glass-card group flex h-full w-full min-w-0 cursor-pointer flex-col gap-4 rounded-[28px] p-4 animate-slideup select-none">
       <div className="relative aspect-[0.95] overflow-hidden rounded-[22px] bg-surface-container-high">
         <div className={`absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-b from-black/10 via-black/10 to-black/55 transition-opacity duration-300 ${activeSong?.id === song.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
           <PlayPause
@@ -49,7 +49,7 @@ const SongCard = ({ song, isPlaying = false, activeSong, i, data }: SongCardProp
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="truncate text-body-lg text-white transition-colors hover:text-primary-fixed">
+        <p className="truncate text-body-lg text-white transition-colors hover:text-white/90">
           <Link to={`/songs/${song.id}`} className="block truncate">
             {song.title}
           </Link>
@@ -62,7 +62,7 @@ const SongCard = ({ song, isPlaying = false, activeSong, i, data }: SongCardProp
         </p>
 
         <div className="mt-1 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-white/45">
-          <span className="truncate">{song.albumName || 'Luna Select'}</span>
+          <span className="truncate">{song.albumName || 'Single'}</span>
           <span>{song.isPlayable ? 'Preview' : 'Info'}</span>
         </div>
       </div>

@@ -1,7 +1,9 @@
 import type { TrackProps } from './types';
+import { useI18n } from '../../i18n';
 
 const Track = ({ isPlaying, isActive, activeSong, canPlayTrack }: TrackProps) => {
-  const artwork = activeSong?.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Luna';
+  const { t } = useI18n();
+  const artwork = activeSong?.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Cover';
 
   return (
     <div className="flex min-w-0 items-center gap-4">
@@ -12,15 +14,15 @@ const Track = ({ isPlaying, isActive, activeSong, canPlayTrack }: TrackProps) =>
 
       <div className="min-w-0 flex-1">
         <p className="truncate text-body-lg text-white">
-          {activeSong?.title || 'Selecciona una cancion'}
+          {activeSong?.title || t('musicPlayer.selectSong')}
         </p>
         <p className="mt-1 truncate text-sm text-on-surface-variant">
-          {activeSong?.artistName || 'El reproductor permanecera listo en este footer'}
+          {activeSong?.artistName || t('musicPlayer.chooseTrack')}
         </p>
       </div>
 
       <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-primary-fixed md:block">
-        {canPlayTrack ? 'Preview' : 'Idle'}
+        {canPlayTrack ? t('musicPlayer.preview') : t('musicPlayer.idle')}
       </div>
     </div>
   );

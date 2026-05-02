@@ -6,6 +6,7 @@ import { FreeMode } from 'swiper/modules';
 import type { ArtistSummary, PlayerTrack, TrackSummary } from '../types/music';
 
 import PlayPause from './PlayPause';
+import { useI18n } from '../i18n';
 import { lunaApi } from '../services/lunaApi';
 import { useApiQuery } from '../hooks/useApiQuery';
 import { usePlayerStore } from '../store/playerStore';
@@ -30,16 +31,20 @@ const TopChartCard = ({
   handlePauseClick,
   handlePlayClick,
 }: TopChartCardProps) => (
-  <div className={`track-row group mb-3 rounded-[22px] border border-white/5 ${activeSong?.id === song.id ? 'bg-primary-container/10 shadow-cyan-glow-sm' : 'bg-white/[0.02]'}`}>
+  <div className={`track-row group mb-3 ${activeSong?.id === song.id ? 'track-row-active' : ''}`}>
     <div className="w-8 flex-shrink-0 text-center text-label-sm text-white/45">
       {String(i + 1).padStart(2, '0')}
     </div>
 
-    <img className="h-16 w-16 flex-shrink-0 rounded-[18px] object-cover" src={song.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Luna'} alt={song.title} />
+    <img
+      className="h-16 w-16 flex-shrink-0 rounded-[18px] object-cover"
+      src={song.imageUrl || 'https://placehold.co/300x300/0d1626/e8f4ff?text=Track'}
+      alt={song.title}
+    />
 
     <div className="min-w-0 flex-1">
       <Link to={`/songs/${song.id}`} className="block">
-        <p className="truncate text-body-lg text-white transition-colors group-hover:text-primary-fixed">
+        <p className="truncate text-body-lg text-white transition-colors group-hover:text-white/90">
           {song.title}
         </p>
       </Link>
@@ -48,7 +53,7 @@ const TopChartCard = ({
       </p>
     </div>
 
-    <div className="ml-2 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-md">
+    <div className="ml-2 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] backdrop-blur-xl">
       <PlayPause
         isPlaying={isPlaying}
         activeSong={activeSong}
@@ -60,23 +65,23 @@ const TopChartCard = ({
   </div>
 );
 
-const ArtistOrb = ({ artist }: { artist: ArtistSummary }) => (
+const ArtistOrb = ({ artist, fallbackLabel }: { artist: ArtistSummary; fallbackLabel: string }) => (
   <Link to={`/artists/${artist.id}`} className="group block min-w-0 w-full">
-    <div className="glass-card flex flex-col items-center rounded-[28px] p-3">
+    <div className="glass-card flex flex-col items-center rounded-[28px] p-3 cursor-grab">
       <div className="relative w-full">
         <div className="absolute inset-0 rounded-full bg-primary-container/10 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
         <img
-          src={artist.imageUrl || 'https://placehold.co/400x400/0d1626/e8f4ff?text=Luna'}
+          src={artist.imageUrl || 'https://placehold.co/400x400/0d1626/e8f4ff?text=Artist'}
           alt={artist.name}
           className="relative aspect-square w-full rounded-full border border-white/10 object-cover"
         />
       </div>
       <div className="mt-3 w-full text-center">
-        <p className="truncate text-sm font-medium text-white transition-colors group-hover:text-primary-fixed">
+        <p className="truncate text-sm font-medium text-white transition-colors group-hover:text-white/90">
           {artist.name}
         </p>
         <p className="mt-1 truncate text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">
-          {artist.genre || 'Artist'}
+          {artist.genre || fallbackLabel}
         </p>
       </div>
     </div>
@@ -84,6 +89,7 @@ const ArtistOrb = ({ artist }: { artist: ArtistSummary }) => (
 );
 
 const TopPlay = () => {
+  const { t } = useI18n();
   const activeSong = usePlayerStore((state) => state.activeSong);
   const isPlaying = usePlayerStore((state) => state.isPlaying);
   const setActiveSong = usePlayerStore((state) => state.setActiveSong);
@@ -109,19 +115,19 @@ const TopPlay = () => {
   };
 
   return (
-    <div ref={divRef} className="flex min-w-0 max-w-full flex-1 flex-col overflow-hidden">
+    <div ref={divRef} className="flex min-w-0 max-w-full flex-1 flex-col select-none">
       <div className="flex flex-col">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Global Pulse</p>
-            <h2 className="mt-2 text-headline-md text-white">Top Charts</h2>
+            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">{t('topPlay.trending')}</p>
+            <h2 className="mt-2 text-headline-md text-white">{t('topPlay.topCharts')}</h2>
           </div>
           <Link to="/top-charts" className="text-sm text-on-surface-variant transition-colors hover:text-white">
-            Ver todo
+            {t('topPlay.viewAll')}
           </Link>
         </div>
 
-      <div className="mt-5 flex flex-col">
+        <div className="mt-5 flex flex-col px-1 py-1">
           {topPlays.map((song, i) => (
             <TopChartCard
               key={song.id}
@@ -139,45 +145,38 @@ const TopPlay = () => {
       <div className="mt-10 flex flex-col">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Voices</p>
-            <h2 className="mt-2 text-headline-md text-white">Top Artists</h2>
+            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">{t('topPlay.artists')}</p>
+            <h2 className="mt-2 text-headline-md text-white">{t('topPlay.topArtists')}</h2>
           </div>
           <Link to="/top-artists" className="text-sm text-on-surface-variant transition-colors hover:text-white">
-            Ver todo
+            {t('topPlay.viewAll')}
           </Link>
         </div>
 
-        <div className="min-w-0 overflow-hidden rounded-[26px]">
+        <div className="min-w-0 rounded-[26px] px-1 py-1">
           <Swiper
-          slidesPerView={2.15}
-          spaceBetween={14}
-          freeMode
-          modules={[FreeMode]}
-          breakpoints={{
-            520: { slidesPerView: 2.35 },
-            640: { slidesPerView: 2.8 },
-            1024: { slidesPerView: 2.15 },
-            1280: { slidesPerView: 2.45 },
-          }}
-          className="mt-5 w-full !overflow-visible"
-        >
-          {topArtists.map((artist: ArtistSummary) => (
-            <SwiperSlide
-              key={artist.id}
-              className="h-auto min-w-0 animate-slideright"
-            >
-              <ArtistOrb artist={artist} />
-            </SwiperSlide>
-          ))}
+            slidesPerView={2.15}
+            spaceBetween={14}
+            freeMode
+            modules={[FreeMode]}
+            breakpoints={{
+              520: { slidesPerView: 2.35 },
+              640: { slidesPerView: 2.8 },
+              1024: { slidesPerView: 2.15 },
+              1280: { slidesPerView: 2.45 },
+            }}
+            className="mt-5 w-full !overflow-visible"
+          >
+            {topArtists.map((artist: ArtistSummary) => (
+              <SwiperSlide
+                key={artist.id}
+                className="h-auto min-w-0 animate-slideright"
+              >
+                <ArtistOrb artist={artist} fallbackLabel={t('topPlay.artistFallback')} />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
-      </div>
-
-      <div className="glass-card mt-8 rounded-[24px] p-4">
-        <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">Mood Signal</p>
-        <p className="mt-2 text-sm leading-6 text-on-surface-variant">
-          Charts vivos, artistas en orbita y una biblioteca visual que responde al flujo del reproductor.
-        </p>
       </div>
     </div>
   );

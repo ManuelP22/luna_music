@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { ArtistDetails, TrackDetails } from '../types/music';
+import { useI18n } from '../i18n';
 
 type DetailsHeaderProps = {
   artistData?: ArtistDetails | null;
@@ -7,8 +8,9 @@ type DetailsHeaderProps = {
 };
 
 const DetailsHeader = ({ artistData, songData }: DetailsHeaderProps) => {
-  const imageUrl = artistData?.imageUrl ?? songData?.imageUrl ?? 'https://placehold.co/800x800/0d1626/e8f4ff?text=Luna';
-  const title = artistData?.name ?? songData?.title ?? 'Luna';
+  const { t } = useI18n();
+  const imageUrl = artistData?.imageUrl ?? songData?.imageUrl ?? 'https://placehold.co/800x800/0d1626/e8f4ff?text=Cover';
+  const title = artistData?.name ?? songData?.title ?? t('details.currentSelection');
   const subtitle = songData?.artistName;
   const genre = artistData?.genre ?? songData?.genre;
 
@@ -37,7 +39,7 @@ const DetailsHeader = ({ artistData, songData }: DetailsHeaderProps) => {
 
         <div className="min-w-0 flex-1">
           <p className="text-label-sm uppercase tracking-[0.28em] text-primary-fixed">
-            {artistData ? 'Artist Detail' : 'Track Detail'}
+            {artistData ? t('details.artist') : t('details.song')}
           </p>
 
           <h1 className="mt-3 truncate text-display-xl text-white">{title}</h1>
@@ -63,7 +65,7 @@ const DetailsHeader = ({ artistData, songData }: DetailsHeaderProps) => {
             ) : null}
             {songData?.isPlayable ? (
               <span className="rounded-full border border-primary-container/20 bg-primary-container/10 px-4 py-2 text-primary-fixed">
-                Preview Ready
+                {t('details.previewReady')}
               </span>
             ) : null}
           </div>

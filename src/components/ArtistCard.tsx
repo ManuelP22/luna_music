@@ -6,11 +6,11 @@ type ArtistCardProps = {
 };
 
 const ArtistCard = ({ artist }: ArtistCardProps) => {
-  const portrait = artist.imageUrl || 'https://placehold.co/600x600/0d1626/e8f4ff?text=Luna';
+  const portrait = artist.imageUrl || 'https://placehold.co/600x600/0d1626/e8f4ff?text=Artist';
 
   return (
     <Link to={`/artists/${artist.id}`} className="group block h-full w-full min-w-0 animate-slideup">
-      <div className="glass-card flex h-full flex-col gap-4 rounded-[28px] p-4">
+      <div className="glass-card flex h-full flex-col gap-4 rounded-[28px] p-4 select-none">
         <div className="relative aspect-[0.95] overflow-hidden rounded-[22px] bg-surface-container-high">
           <img
             alt={artist.name}
@@ -27,13 +27,13 @@ const ArtistCard = ({ artist }: ArtistCardProps) => {
 
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="truncate text-body-lg text-white transition-colors group-hover:text-primary-fixed">{artist.name}</p>
+            <p className="truncate text-body-lg text-white transition-colors group-hover:text-white/90">{artist.name}</p>
             <p className="mt-1 truncate text-sm text-on-surface-variant">
-              {artist.genre || 'Featured in Luna'}
+              {artist.genre || 'Perfil destacado'}
             </p>
           </div>
 
-          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-primary-fixed transition-transform duration-300 group-hover:scale-105">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/80 transition-transform duration-300 group-hover:scale-105">
             <span className="text-lg">+</span>
           </div>
         </div>
