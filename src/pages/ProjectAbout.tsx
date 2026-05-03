@@ -61,6 +61,27 @@ const ProjectAbout = () => {
         </p>
       </section>
 
+      <section className="glass-card rounded-[28px] p-6 sm:p-7">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">{t('project.repoLabel')}</p>
+            <h2 className="mt-3 text-headline-md text-white">{t('project.repoTitle')}</h2>
+            <p className="mt-4 text-sm leading-7 text-on-surface-variant">
+              {t('project.repoDescription')}
+            </p>
+          </div>
+
+          <a
+            href="https://github.com/ManuelP22/luna_music"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.05] px-5 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.08]"
+          >
+            {t('project.repoCta')}
+          </a>
+        </div>
+      </section>
+
       <section className="glass-panel overflow-hidden rounded-[32px] border border-white/10 p-6 sm:p-8">
         <div className="flex flex-col gap-6">
           <div>
