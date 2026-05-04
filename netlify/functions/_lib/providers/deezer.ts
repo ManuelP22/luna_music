@@ -92,7 +92,11 @@ export const mapDeezerArtistToSummary = (artist: DeezerArtist, genre?: string | 
 
 export const mapDeezerTrackToDetails = (
   track: DeezerTrack & { release_date?: string },
-  options?: { genre?: string | null; relatedTracks?: TrackSummary[] },
+  options?: {
+    genre?: string | null;
+    lyrics?: TrackDetails['lyrics'];
+    relatedTracks?: TrackSummary[];
+  },
 ): TrackDetails => ({
   id: createTrackId('deezer', track.id),
   title: track.title,
@@ -103,8 +107,10 @@ export const mapDeezerTrackToDetails = (
   previewUrl: track.preview ?? null,
   durationSec: track.duration ?? null,
   genre: options?.genre ?? null,
+  countryCode: null,
+  isPlayable: Boolean(track.preview),
   releaseDate: track.release_date ?? track.album?.release_date ?? null,
-  lyrics: {
+  lyrics: options?.lyrics ?? {
     available: false,
     lines: [],
   },

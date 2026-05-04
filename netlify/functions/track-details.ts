@@ -1,6 +1,7 @@
 import type { Config, Context } from '@netlify/functions';
 import { getDeezerTrack, mapDeezerTrackToDetails } from './_lib/providers/deezer';
 import { getLastFmSimilarTracks } from './_lib/providers/lastfm';
+import { getLyricsForTrack } from './_lib/providers/lrclib';
 import { assertGetRequest, errorResponse, getLimit, jsonResponse, ApiError } from './_lib/http';
 import { parseTrackId } from './_lib/ids';
 
@@ -22,15 +23,12 @@ export default async (request: Request, context: Context) => {
 
     const track = await getDeezerTrack(externalId);
 
-    let relatedTracks = [];
+    const [relatedTracks, lyrics] = await Promise.all([
+      getLastFmSimilarTracks(track.artist?.name ?? '', track.title, getLimit(request, 5)).catch(() => []),
+      getLyricsForTrack(track.title, track.artist?.name ?? '', track.album?.title),
+    ]);
 
-    try {
-      relatedTracks = await getLastFmSimilarTracks(track.artist?.name ?? '', track.title, getLimit(request, 5));
-    } catch {
-      relatedTracks = [];
-    }
-
-    return jsonResponse(mapDeezerTrackToDetails(track, { relatedTracks }));
+    return jsonResponse(mapDeezerTrackToDetails(track, { lyrics, relatedTracks }));
   } catch (error) {
     return errorResponse(error);
   }

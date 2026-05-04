@@ -33,7 +33,7 @@ const App = () => (
 
             {/* Panel principal de rutas */}
             <section className="glass-panel min-w-0 overflow-hidden rounded-[28px] border border-white/5 shadow-ambient-card">
-              <div className="hide-scrollbar h-full overflow-x-hidden overflow-y-auto px-4 py-4 sm:px-6 sm:py-5 xl:px-8">
+              <div className="hide-scrollbar h-full overflow-x-hidden overflow-y-auto px-4 pb-24 pt-4 sm:px-6 sm:pb-28 sm:pt-5 lg:py-5 xl:px-8">
                 <Routes>
                   <Route path="/" element={<Discover />} />
                   <Route path="/top-artists" element={<TopArtists />} />
@@ -64,7 +64,13 @@ const App = () => (
           NO usa items-end — el contenido se centra verticalmente
           dentro del MusicPlayer con items-center.
       ───────────────────────────────────────────────────────── */}
-    <div className="relative z-20 h-24 flex-shrink-0 border-t border-white/10 bg-black/30 shadow-player-top backdrop-blur-glass">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] sm:px-4 sm:pb-[calc(env(safe-area-inset-bottom)+1rem)] lg:hidden">
+      <div className="pointer-events-auto mx-auto max-w-3xl rounded-[28px] border border-white/10 bg-black/45 shadow-[0_20px_60px_rgba(0,0,0,0.42)] backdrop-blur-glass">
+        <MusicPlayer renderAudio={false} />
+      </div>
+    </div>
+
+    <div className="relative z-20 hidden h-24 flex-shrink-0 border-t border-white/10 bg-black/30 shadow-player-top backdrop-blur-glass lg:block">
       <MusicPlayer />
     </div>
 

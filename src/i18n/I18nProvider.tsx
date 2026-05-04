@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -99,17 +100,19 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     return formatter.of(countryCode.toUpperCase()) || fallbackName || countryCode;
   };
 
+  const contextValue = useMemo(() => ({
+    locale,
+    setLocale,
+    t,
+    geoCountry,
+    geoError,
+    isResolvingLocale,
+    formatCountryName,
+  }), [locale, geoCountry, geoError, isResolvingLocale]);
+
   return (
     <I18nContext.Provider
-      value={{
-        locale,
-        setLocale,
-        t,
-        geoCountry,
-        geoError,
-        isResolvingLocale,
-        formatCountryName,
-      }}
+      value={contextValue}
     >
       {children}
     </I18nContext.Provider>

@@ -1,18 +1,29 @@
 import { Link } from 'react-router-dom';
+import { BsFillPauseFill, BsFillPlayFill } from 'react-icons/bs';
 import type { ArtistDetails, TrackDetails } from '../types/music';
 import { useI18n } from '../i18n';
+
+type SongPlaybackProps = {
+  isPlaying: boolean;
+  isCurrentSong: boolean;
+  onPause: () => void;
+  onPlay: () => void;
+};
 
 type DetailsHeaderProps = {
   artistData?: ArtistDetails | null;
   songData?: TrackDetails | null;
+  songPlayback?: SongPlaybackProps;
 };
 
-const DetailsHeader = ({ artistData, songData }: DetailsHeaderProps) => {
+const DetailsHeader = ({ artistData, songData, songPlayback }: DetailsHeaderProps) => {
   const { t } = useI18n();
   const imageUrl = artistData?.imageUrl ?? songData?.imageUrl ?? 'https://placehold.co/800x800/0d1626/e8f4ff?text=Cover';
   const title = artistData?.name ?? songData?.title ?? t('details.currentSelection');
   const subtitle = songData?.artistName;
   const genre = artistData?.genre ?? songData?.genre;
+  const canPlaySong = Boolean((songData?.isPlayable || songData?.previewUrl) && songPlayback);
+  const isSongPlaying = Boolean(songPlayback?.isCurrentSong && songPlayback.isPlaying);
 
   return (
     <section className="glass-panel relative overflow-hidden rounded-[32px] border border-white/10 p-6 sm:p-8">
@@ -52,21 +63,44 @@ const DetailsHeader = ({ artistData, songData }: DetailsHeaderProps) => {
             </Link>
           ) : null}
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-on-surface-variant">
-            {genre ? (
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
-                {genre}
-              </span>
-            ) : null}
-            {songData?.albumName ? (
-              <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
-                {songData.albumName}
-              </span>
-            ) : null}
-            {songData?.isPlayable ? (
-              <span className="rounded-full border border-primary-container/20 bg-primary-container/10 px-4 py-2 text-primary-fixed">
-                {t('details.previewReady')}
-              </span>
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-on-surface-variant">
+
+              {genre ? (
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
+                  {genre}
+                </span>
+              ) : null}
+              {songData?.albumName ? (
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
+                  {songData.albumName}
+                </span>
+              ) : null}
+
+              <div>
+                {songData?.isPlayable ? (
+                  <span className="rounded-full border border-primary-container/20 bg-primary-container/10 px-4 py-2 text-primary-fixed">
+                    {t('details.previewReady')}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+
+            {canPlaySong ? (
+              <button
+                type="button"
+                className="btn-play-primary h-14 w-14"
+                aria-label={isSongPlaying ? t('musicPlayer.pause') : t('musicPlayer.playPreview')}
+                title={isSongPlaying ? t('musicPlayer.pause') : t('musicPlayer.playPreview')}
+                onClick={isSongPlaying ? songPlayback.onPause : songPlayback.onPlay}
+              >
+                {isSongPlaying ? (
+                  <BsFillPauseFill size={18} className="text-white" />
+                ) : (
+                  <BsFillPlayFill size={18} className="translate-x-[1px] text-white" />
+                )}
+                {/* <span>{isSongPlaying ? t('musicPlayer.pause') : t('musicPlayer.playPreview')}</span> */}
+              </button>
             ) : null}
           </div>
         </div>

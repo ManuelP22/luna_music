@@ -16,11 +16,18 @@ const Controls = ({
   handlePrevSong,
   handleNextSong,
   canPlayTrack,
+  compact = false,
 }: ControlsProps) => {
   const { t } = useI18n();
+  const transportButtonClass = compact
+    ? 'flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-200 hover:border-primary-container/30 hover:bg-white/[0.08]'
+    : 'flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-200 hover:border-primary-container/30 hover:bg-white/[0.08]';
+  const transportIconSize = compact ? 22 : 28;
+  const primaryButtonClass = compact ? 'btn-play-primary h-11 w-11' : 'btn-play-primary h-14 w-14';
+  const primaryIconSize = compact ? 18 : 22;
 
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className={`flex items-center justify-center ${compact ? 'gap-2' : 'gap-3'}`}>
       <button
         type="button"
         aria-label={t('musicPlayer.repeat')}
@@ -34,36 +41,36 @@ const Controls = ({
       <button
         type="button"
         aria-label={t('musicPlayer.previous')}
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-200 hover:border-primary-container/30 hover:bg-white/[0.08]"
+        className={transportButtonClass}
         onClick={handlePrevSong}
         disabled={!currentSongs.length}
       >
-        <MdSkipPrevious size={28} />
+        <MdSkipPrevious size={transportIconSize} />
       </button>
 
       <button
         type="button"
         aria-label={isPlaying ? t('musicPlayer.pause') : t('musicPlayer.play')}
-        className={`btn-play-primary h-14 w-14 ${!canPlayTrack ? 'cursor-not-allowed opacity-50' : ''}`}
+        className={`${primaryButtonClass} ${!canPlayTrack ? 'cursor-not-allowed opacity-50' : ''}`}
         onClick={handlePlayPause}
         disabled={!canPlayTrack}
         title={canPlayTrack ? t('musicPlayer.playPreview') : t('musicPlayer.noPreview')}
       >
         {isPlaying ? (
-          <BsFillPauseFill size={22} className="text-white" />
+          <BsFillPauseFill size={primaryIconSize} className="text-white" />
         ) : (
-          <BsFillPlayFill size={22} className="translate-x-[1px] text-white" />
+          <BsFillPlayFill size={primaryIconSize} className="translate-x-[1px] text-white" />
         )}
       </button>
 
       <button
         type="button"
         aria-label={t('musicPlayer.next')}
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white transition-all duration-200 hover:border-primary-container/30 hover:bg-white/[0.08]"
+        className={transportButtonClass}
         onClick={handleNextSong}
         disabled={!currentSongs.length}
       >
-        <MdSkipNext size={28} />
+        <MdSkipNext size={transportIconSize} />
       </button>
 
       <button

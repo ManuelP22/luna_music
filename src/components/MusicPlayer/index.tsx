@@ -7,7 +7,11 @@ import Track from './Track';
 import VolumeBar from './VolumeBar';
 import { usePlayerStore } from '../../store/playerStore';
 
-const MusicPlayer = () => {
+type MusicPlayerProps = {
+  renderAudio?: boolean;
+};
+
+const MusicPlayer = ({ renderAudio = true }: MusicPlayerProps) => {
   const activeSong = usePlayerStore((state) => state.activeSong);
   const currentSongs = usePlayerStore((state) => state.currentSongs);
   const currentIndex = usePlayerStore((state) => state.currentIndex);
@@ -74,18 +78,19 @@ const MusicPlayer = () => {
   };
 
   return (
-    /* ── items-center: el contenido queda centrado verticalmente
-       dentro del h-24 del player. Sin pb/pt asimétricos.  */
-    <div className="flex h-full w-full items-center px-4 sm:px-6 lg:px-8">
-      <div className={`grid w-full grid-cols-1 gap-2 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_minmax(220px,0.9fr)] lg:items-center ${hasActiveSong ? 'opacity-100' : 'opacity-95'}`}>
-        <Track
-          isPlaying={isPlaying}
-          isActive={isActive}
-          activeSong={activeSong}
-          canPlayTrack={canPlayTrack}
-        />
+    <div className="flex h-full w-full items-center px-3 py-3 sm:px-4 sm:py-4 lg:px-8 lg:py-0">
+      <div className={`w-full ${hasActiveSong ? 'opacity-100' : 'opacity-95'}`}>
+        <div className="flex items-center gap-3 lg:hidden">
+          <div className="min-w-0 flex-1">
+            <Track
+              isPlaying={isPlaying}
+              isActive={isActive}
+              activeSong={activeSong}
+              canPlayTrack={canPlayTrack}
+              compact
+            />
+          </div>
 
-        <div className="flex min-w-0 flex-col items-center justify-center gap-2">
           <Controls
             isPlaying={isPlaying}
             repeat={repeat}
@@ -97,39 +102,66 @@ const MusicPlayer = () => {
             handlePrevSong={handlePrevSong}
             handleNextSong={handleNextSong}
             canPlayTrack={canPlayTrack}
-          />
-
-          <Seekbar
-            value={appTime}
-            min={0}
-            max={duration}
-            onChange={handleSeekChange}
-            onStepBackward={() => handleSeekChange(appTime - 5)}
-            onStepForward={() => handleSeekChange(appTime + 5)}
+            compact
           />
         </div>
 
-        <VolumeBar
-          value={volume}
-          min={0}
-          max={1}
-          onChange={(nextVolume) => setVolume(nextVolume)}
-          setVolume={setVolume}
-        />
+        <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_minmax(220px,0.9fr)] lg:items-center lg:gap-2">
+          <Track
+            isPlaying={isPlaying}
+            isActive={isActive}
+            activeSong={activeSong}
+            canPlayTrack={canPlayTrack}
+          />
 
-        <Player
-          activeSong={activeSong}
-          volume={volume}
-          isPlaying={isPlaying}
-          seekTime={seekTime}
-          repeat={repeat}
-          onEnded={handleNextSong}
-          onTimeUpdate={(event) => setAppTime(event.currentTarget.currentTime)}
-          onLoadedData={(event) => {
-            setDuration(event.currentTarget.duration || 0);
-            setSeekTime(event.currentTarget.currentTime || 0);
-          }}
-        />
+          <div className="flex min-w-0 flex-col items-center justify-center gap-2">
+            <Controls
+              isPlaying={isPlaying}
+              repeat={repeat}
+              setRepeat={setRepeat}
+              shuffle={shuffle}
+              setShuffle={setShuffle}
+              currentSongs={currentSongs}
+              handlePlayPause={handlePlayPause}
+              handlePrevSong={handlePrevSong}
+              handleNextSong={handleNextSong}
+              canPlayTrack={canPlayTrack}
+            />
+
+            <Seekbar
+              value={appTime}
+              min={0}
+              max={duration}
+              onChange={handleSeekChange}
+              onStepBackward={() => handleSeekChange(appTime - 5)}
+              onStepForward={() => handleSeekChange(appTime + 5)}
+            />
+          </div>
+
+          <VolumeBar
+            value={volume}
+            min={0}
+            max={1}
+            onChange={(nextVolume) => setVolume(nextVolume)}
+            setVolume={setVolume}
+          />
+        </div>
+
+        {renderAudio ? (
+          <Player
+            activeSong={activeSong}
+            volume={volume}
+            isPlaying={isPlaying}
+            seekTime={seekTime}
+            repeat={repeat}
+            onEnded={handleNextSong}
+            onTimeUpdate={(event) => setAppTime(event.currentTarget.currentTime)}
+            onLoadedData={(event) => {
+              setDuration(event.currentTarget.duration || 0);
+              setSeekTime(event.currentTarget.currentTime || 0);
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );

@@ -29,6 +29,8 @@ export type TrackDetails = {
   previewUrl?: string | null;
   durationSec?: number | null;
   genre?: string | null;
+  countryCode?: string | null;
+  isPlayable: boolean;
   releaseDate?: string | null;
   lyrics: {
     available: boolean;

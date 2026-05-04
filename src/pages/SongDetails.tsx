@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { DetailsHeader, Error, Loader, RelatedSongs } from '../components';
 import { useI18n } from '../i18n';
-import type { TrackSummary } from '../types/music';
+import type { PlayerTrackCollection, TrackSummary } from '../types/music';
 
 import { lunaApi } from '../services/lunaApi';
 import { useApiQuery } from '../hooks/useApiQuery';
@@ -23,8 +23,19 @@ const SongDetails = () => {
   if (isLoading) return <Loader title={t('songDetails.loadingTitle')} />;
   if (error || !songData) return <Error />;
 
+  const songQueue: PlayerTrackCollection = [
+    songData,
+    ...songData.relatedTracks.filter((track) => track.id !== songData.id),
+  ];
+  const isCurrentSong = activeSong?.id === songData.id;
+
   const handlePauseClick = () => {
     playPause(false);
+  };
+
+  const handleSongPlayClick = () => {
+    setActiveSong({ song: songData, data: songQueue, i: 0 });
+    playPause(true);
   };
 
   const handlePlayClick = (song: TrackSummary, i: number) => {
@@ -34,7 +45,15 @@ const SongDetails = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <DetailsHeader songData={songData} />
+      <DetailsHeader
+        songData={songData}
+        songPlayback={{
+          isPlaying,
+          isCurrentSong,
+          onPause: handlePauseClick,
+          onPlay: handleSongPlayClick,
+        }}
+      />
 
       <section className="glass-card rounded-[28px] p-6 sm:p-8">
         <div className="flex items-end justify-between gap-4">

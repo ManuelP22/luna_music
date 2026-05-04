@@ -12,6 +12,7 @@ export type ControlsProps = {
   handlePrevSong: () => void;
   handleNextSong: () => void;
   canPlayTrack: boolean;
+  compact?: boolean;
 };
 
 export type PlayerProps = {
@@ -39,6 +40,7 @@ export type TrackProps = {
   isActive: boolean;
   activeSong: PlayerTrack | null;
   canPlayTrack: boolean;
+  compact?: boolean;
 };
 
 export type VolumeBarProps = {

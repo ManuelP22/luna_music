@@ -7,6 +7,7 @@ const highlights = [
   'Netlify Functions',
   'Deezer',
   'Last.fm',
+  'LRCLIB',
   'Zustand',
 ];
 
@@ -58,6 +59,14 @@ const ProjectAbout = () => {
         <h2 className="mt-3 text-headline-md text-white">{t('project.previewTitle')}</h2>
         <p className="mt-4 max-w-3xl text-sm leading-7 text-on-surface-variant">
           {t('project.previewDescription')}
+        </p>
+      </section>
+
+      <section className="glass-card rounded-[28px] p-6 sm:p-7">
+        <p className="text-label-sm uppercase tracking-[0.24em] text-primary-fixed">{t('project.lyricsLabel')}</p>
+        <h2 className="mt-3 text-headline-md text-white">{t('project.lyricsTitle')}</h2>
+        <p className="mt-4 max-w-3xl text-sm leading-7 text-on-surface-variant">
+          {t('project.lyricsDescription')}
         </p>
       </section>
 
