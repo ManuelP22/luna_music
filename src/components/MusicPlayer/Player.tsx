@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type SyntheticEvent } from 'react';
 import type { PlayerProps } from './types';
 
 const Player = ({
@@ -14,19 +14,50 @@ const Player = ({
 }: PlayerProps) => {
   const ref = useRef<HTMLAudioElement | null>(null);
 
+  const attemptPlayback = () => {
+    const audio = ref.current;
+
+    if (!audio || !isPlaying || !activeSong?.previewUrl) return;
+
+    audio.play().catch(() => {});
+  };
+
+  const handleLoadedData = (event: SyntheticEvent<HTMLAudioElement>) => {
+    onLoadedData(event);
+    attemptPlayback();
+  };
+
   useEffect(() => {
-    if (!ref.current) return;
+    const audio = ref.current;
+
+    if (!audio) return;
 
     if (!activeSong?.previewUrl) {
-      ref.current.pause();
+      audio.pause();
+      return;
+    }
+
+    audio.load();
+  }, [activeSong?.id, activeSong?.previewUrl]);
+
+  useEffect(() => {
+    const audio = ref.current;
+
+    if (!audio) return;
+
+    if (!activeSong?.previewUrl) {
+      audio.pause();
       return;
     }
 
     if (isPlaying) {
-      ref.current.play().catch(() => {});
-    } else {
-      ref.current.pause();
+      if (audio.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        attemptPlayback();
+      }
+      return;
     }
+
+    audio.pause();
   }, [isPlaying, activeSong?.id, activeSong?.previewUrl]);
 
   useEffect(() => {
@@ -45,10 +76,12 @@ const Player = ({
     <audio
       src={activeSong?.previewUrl ?? undefined}
       ref={ref}
+      preload="auto"
       loop={repeat}
       onEnded={onEnded}
+      onCanPlay={attemptPlayback}
       onTimeUpdate={onTimeUpdate}
-      onLoadedData={onLoadedData}
+      onLoadedData={handleLoadedData}
     />
   );
 };
